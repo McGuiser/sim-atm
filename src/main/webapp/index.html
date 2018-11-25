@@ -1,10 +1,67 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
+        <title>Sim ATM</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1 class="header">Sim ATM</h1>
+        
+        <div class="wrapper">
+            <div class="account-menu">
+                
+                <a class="active" href="login">Sign In</a>
+                <a href="registration">Register</a>
+                
+            </div>
+            <div id="registration" class="form invisible">
+            
+                <label for="regUsername">Email</label>
+                <input id="regUsername" type="text">
+                <label for="initDeposit">Initial Deposit</label>
+                <input id="initDeposit" type=text>
+                <label for="regPIN">4-Digit PIN</label>
+                <input id="regPIN" type="password">
+                <label for="regPINAgain">4-Digit PIN again</label>
+                <input id="regPINAgain" type="password">
+                <span id="regError" class="error"></span>
+                <button id="registerButton">Register</button>
+
+            </div>
+            <div id="login" class="form invisible" style="display: block;">
+
+                <label for="loginUsername">Account #</label>
+                <input id="loginUsername" type="text">
+                <label for="loginPIN">4-Digit PIN</label>
+                <input id="loginPIN" type="password">
+                <span id="loginError" class="error"></span>
+                <button id="loginButton">Sign In</button>
+            
+            </div>
+        </div>
+        
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            
+            "use strict";
+
+            $('.account-menu a').click(function (ev) {
+                $('.account-menu a').each(function (i, elem) {
+                    if ($(elem).hasClass('active')) {
+                        $(elem).removeClass('active');
+                        var href = $(elem).attr('href');
+                        $('#' + href).hide();
+                    }
+                });
+                var link = $(ev.target);
+                link.addClass('active');
+                var href = link.attr('href');
+                $('#' + href).show();
+                return false;
+            });
+            
+        </script>
     </body>
 </html>

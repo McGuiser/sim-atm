@@ -1,0 +1,102 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.header {
+    color: #2C7BC0;
+    background-color: white;
+    padding: 20px;
+    text-align: justify;
+    font-size: 35px;
+}
+
+.wrapper{
+    width: 300px;
+}
+
+.account-menu {
+    list-style-type: none;
+    margin-left: 40px;
+    margin-top: 30px;
+    padding: 0;
+    width: 300px;
+    height: 50px;
+}
+
+.account-menu a {
+    display: inline;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+    width: 150px;
+}
+
+.account-menu .active {
+    background-color: #2C7BC0;
+    color: white;
+}
+
+.account-menu a:hover {
+    background-color: #50AE33;
+    color: white;
+}
+
+.error {
+    color: red;
+    padding: 5px 5px;
+    width: 100%;
+    display: inline-block;
+}
+
+.small {
+    width: 300px;
+    margin-left: 40px;
+}
+
+.form {
+    width: 300px;
+    height: 300px;
+    margin-left: 40px;
+}
+
+.invisible {
+    display: none;
+}
+
+.form label {
+    width: 100%;
+}
+
+.form input[type=text], input[type=password], select {
+    width: 100%;
+    padding: 10px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input:focus { 
+    outline: none !important;
+    border-color: #FD9700 !important;
+    box-shadow: 0 0 10px #FD9700;
+}
+
+button {
+    background-color: #50AE33;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2C7BC0;
+}
