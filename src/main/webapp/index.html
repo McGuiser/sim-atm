@@ -17,8 +17,8 @@
             </div>
             <div id="registration" class="form invisible">
             
-                <label for="regUsername">Email</label>
-                <input id="regUsername" type="text">
+                <label for="regEmail">Email</label>
+                <input id="regEmail" type="text">
                 <label for="initDeposit">Initial Deposit</label>
                 <input id="initDeposit" type=text>
                 <label for="regPIN">4-Digit PIN</label>
@@ -60,6 +60,44 @@
                 var href = link.attr('href');
                 $('#' + href).show();
                 return false;
+            });
+            
+            $('#registerButton').click(function () {
+                var email = $('#regEmail').val();
+                var deposit = $('#initDeposit').val();
+                var pin = $('#regPIN').val();
+                var pin2 = $('#regPINAgain').val();
+                if (email.length < 4) {
+                    $('#regError').html('Username is too short');
+                    return;
+                }
+                if (pin !== pin2) {
+                    $('#regError').html('Passwords do not match');
+                    return;
+                }
+                var data = JSON.stringify({
+                    email: email,
+                    balance: deposit,
+                    pin: pin
+                });
+                $.ajax({
+                    url: 'api/registration',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: data,
+                    dataType: 'text',
+                    success: function (resp) {
+                        alert('Registration successful. Your account number is: ' + resp);
+                        $('#regEmail').val('');
+                        $('#initDeposit').val('');
+                        $('#regPIN').val('');
+                        $('#regPINAgain').val('');
+                    },
+                    error: function (resp) {
+                        console.log(deposit);
+                        $('#regError').html(resp.responseText);
+                    }
+                });
             });
             
         </script>
