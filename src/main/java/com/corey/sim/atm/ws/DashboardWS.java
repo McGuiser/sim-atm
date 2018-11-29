@@ -58,7 +58,6 @@ public class DashboardWS {
                 return Response.status(Status.UNAUTHORIZED).build();
             }
             float amount = dashDTO.getBalance();
-            //accountService.persist(account);
             System.out.println("Amount :" + amount);
             System.out.println("Account balance :" + account.getBalance());
             account.setBalance(amount);

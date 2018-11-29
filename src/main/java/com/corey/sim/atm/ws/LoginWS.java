@@ -35,7 +35,9 @@ public class LoginWS {
                 request.logout();
             }
             String accountNumber = dto.getAccountNumber();
+            request.getSession();
             request.login(accountNumber, dto.getPin());
+            
             return Response.ok("").build();
         } catch (ServletException e) {
             System.out.println("In servlet exception");
