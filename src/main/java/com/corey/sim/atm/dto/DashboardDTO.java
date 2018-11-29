@@ -1,22 +1,22 @@
 package com.corey.sim.atm.dto;
 
+import com.corey.sim.atm.datastore.Account;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class RegistrationDTO {
+public class DashboardDTO {
 
-    private Long id;
     private String accountNumber;
     private String email;
     private Float balance;
-    private String pin;
-
-    public Long getId() {
-        return id;
+    
+    public DashboardDTO() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public DashboardDTO(Account a) {
+        accountNumber = a.getAccountNumber();
+        email = a.getEmail();
+        balance = a.getBalance();
     }
 
     public String getAccountNumber() {
@@ -36,18 +36,11 @@ public class RegistrationDTO {
     }
 
     public Float getBalance() {
+        System.out.println("Hello from dto :" + balance);
         return balance;
     }
 
     public void setBalance(Float balance) {
         this.balance = balance;
-    }
-
-    public String getPin() {
-        return pin;
-    }
-
-    public void setPin(String pin) {
-        this.pin = pin;
     }
 }

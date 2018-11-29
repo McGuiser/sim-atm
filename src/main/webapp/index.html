@@ -15,12 +15,12 @@
                 <a href="registration">Register</a>
                 
             </div>
-            <div id="registration" class="form invisible">
+            <div id="amount" class="form invisible">
             
                 <label for="regEmail">Email</label>
                 <input id="regEmail" type="text">
                 <label for="initDeposit">Initial Deposit</label>
-                <input id="initDeposit" type=text>
+                <input id="depositAmount" type=text>
                 <label for="regPIN">4-Digit PIN</label>
                 <input id="regPIN" type="password">
                 <label for="regPINAgain">4-Digit PIN again</label>
@@ -31,8 +31,8 @@
             </div>
             <div id="login" class="form invisible" style="display: block;">
 
-                <label for="loginUsername">Account #</label>
-                <input id="loginUsername" type="text">
+                <label for="accountNumber">Account #</label>
+                <input id="accountNumber" type="text">
                 <label for="loginPIN">4-Digit PIN</label>
                 <input id="loginPIN" type="password">
                 <span id="loginError" class="error"></span>
@@ -44,7 +44,6 @@
         
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>
-            
             "use strict";
 
             $('.account-menu a').click(function (ev) {
@@ -62,17 +61,40 @@
                 return false;
             });
             
+            $('#loginButton').on('click', function () {
+                var accountNumber = $('#accountNumber').val().trim();
+                var pin = $('#loginPIN').val().trim();
+                console.log(accountNumber + " " + pin)
+                var data = JSON.stringify({
+                    accountNumber: accountNumber,
+                    pin: pin
+                });
+                $.ajax({
+                    url: 'api/login',
+                    type: 'post',
+                    dataType: 'text',
+                    contentType: 'application/json',
+                    data: data,
+                    success: function () {
+                            window.location.replace("dashboard.html");
+                    },
+                    error: function () {
+                        $('#loginError').html('Invalid account # or pin');
+                    }
+                });
+            });
+            
             $('#registerButton').click(function () {
                 var email = $('#regEmail').val();
                 var deposit = $('#initDeposit').val();
                 var pin = $('#regPIN').val();
                 var pin2 = $('#regPINAgain').val();
                 if (email.length < 4) {
-                    $('#regError').html('Username is too short');
+                    $('#regError').html('Email is too short');
                     return;
                 }
                 if (pin !== pin2) {
-                    $('#regError').html('Passwords do not match');
+                    $('#regError').html('PINs do not match');
                     return;
                 }
                 var data = JSON.stringify({
@@ -87,11 +109,12 @@
                     data: data,
                     dataType: 'text',
                     success: function (resp) {
-                        alert('Registration successful. Your account number is: ' + resp);
                         $('#regEmail').val('');
                         $('#initDeposit').val('');
                         $('#regPIN').val('');
                         $('#regPINAgain').val('');
+                        $('#regError').html('');
+                        alert('Registration successful. Your account number is: ' + resp);
                     },
                     error: function (resp) {
                         console.log(deposit);

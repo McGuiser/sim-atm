@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Account Dashboard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <h1 class="header">Sim ATM</h1>
+        
+        <div id="accountBalance"></div>
+        
+        <div class="wrapper">
+            <div class="account-menu">
+                
+                <a class="active" href="deposit">Deposit</a>
+                <a href="withdrawal">Withdrawal</a>
+                
+            </div>
+            <div id="amount" class="form">
+            
+                <label for="inAmount">Amount: </label>
+                <input id="inAmount" type=text>
+                <span id="regError" class="error"></span>
+                <button id="confirmButton">Confirm</button>
+
+            </div>
+        </div>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+        <script>
+            "use strict";
+            
+            let transactionType;
+            let accountNumber;
+            let email;
+            let initBalance;
+            
+            $('.account-menu a').click(function (ev) {
+                $('.account-menu a').each(function (i, elem) {
+                    if ($(elem).hasClass('active')) {
+                        $(elem).removeClass('active');
+                        var href = $(elem).attr('href');
+                        $('#' + href).hide();
+                    }
+                });
+                var link = $(ev.target);
+                link.addClass('active');
+                transactionType = link.attr('href');
+                return false;
+            });
+            
+            $.ajax({
+                url: 'api/dashboard',
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                        accountNumber = data.accountNumber;
+                        email = data.email;
+                        initBalance = data.balance;
+                        $('#accountBalance').html(initBalance);
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+                
+            $('#confirmButton').click(function () {
+                let amount = parseFloat($('#inAmount').val());
+                if(transactionType === 'withdrawal'){
+                    amount = amount * -1;
+                }
+                let balance = initBalance + amount;
+                console.log("initBalance: " + initBalance + " amount: " + amount + " balance: " + balance)
+                var data = JSON.stringify({
+                    accountNumber: accountNumber,
+                    email: email,
+                    balance: balance
+                });
+                $.ajax({
+                    url: 'api/dashboard',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: data,
+                    dataType: 'text',
+                    success: function (resp) {
+                        console.log(resp);
+                        initBalance = parseFloat(resp);
+                        $('#accountBalance').html(resp);
+                    },
+                    error: function (resp) {
+                        $('#error').html(resp.responseText);
+                    }
+                });
+            });
+            
+        </script>
+    </body>
+</html>

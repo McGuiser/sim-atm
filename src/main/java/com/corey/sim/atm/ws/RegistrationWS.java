@@ -33,7 +33,6 @@ public class RegistrationWS {
             String email = dto.getEmail().trim().toLowerCase();
             String pin = dto.getPin().trim();
             Float deposit = dto.getBalance();
-            System.out.println(accountNumber + " " + email + " " + pin  + " " + deposit);
             if (email.length() < Account.EMAIL_MIN_LENGTH
                     || email.length() > Account.EMAIL_MAX_LENGTH
                     || pin.length() != Account.PIN_LENGTH) {

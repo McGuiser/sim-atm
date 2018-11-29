@@ -1,6 +1,7 @@
 package com.corey.sim.atm.service;
 
 import com.corey.sim.atm.datastore.Account;
+import com.corey.sim.atm.datastore.AuthGroup;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,5 +30,13 @@ public class AccountService {
 
     public void persist(Account account) {
         em.persist(account);
+        AuthGroup grp = new AuthGroup("account", account.getAccountNumber());
+        em.persist(grp);
+    }
+    
+    public void merge(Account account) {
+        em.merge(account);
+        em.flush();
     }
 }
+
