@@ -36,7 +36,6 @@ public class DashboardDTO {
     }
 
     public Float getBalance() {
-        System.out.println("Hello from dto :" + balance);
         return balance;
     }
 

@@ -7,7 +7,6 @@ public class LoginDTO {
 
     private String accountNumber;
     private String pin;
-    private String nextPage;
 
     public String getAccountNumber() {
         return accountNumber;
@@ -23,13 +22,5 @@ public class LoginDTO {
 
     public void setPin(String pin) {
         this.pin = pin;
-    }
-
-    public String getNextPage() {
-        return nextPage;
-    }
-
-    public void setNextPage(String nextPage) {
-        this.nextPage = nextPage;
     }
 }

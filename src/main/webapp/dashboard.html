@@ -14,19 +14,21 @@ and open the template in the editor.
     <body>
         <h1 class="header">Sim ATM</h1>
         
-        <div id="accountBalance"></div>
-        
         <div class="wrapper">
             <div class="account-menu">
                 
                 <a class="active" href="deposit">Deposit</a>
                 <a href="withdrawal">Withdrawal</a>
                 <a id="logoutLink" href="logout">Logout</a>
+                
             </div>
             <div id="amount" class="form">
-            
+                
+                <div id="accountBalance" style="font-size: 30px;"></div><br>
+                
                 <label for="inAmount">Amount: </label>
                 <input id="inAmount" type=text>
+                
                 <span id="error" class="error"></span>
                 <button id="confirmButton">Confirm</button>
 
@@ -47,11 +49,11 @@ and open the template in the editor.
                 $('.account-menu a').each(function (i, elem) {
                     if ($(elem).hasClass('active')) {
                         $(elem).removeClass('active');
-                        var href = $(elem).attr('href');
+                        let href = $(elem).attr('href');
                         $('#' + href).hide();
                     }
                 });
-                var link = $(ev.target);
+                let link = $(ev.target);
                 link.addClass('active');
                 transactionType = link.attr('href');
                 return false;
@@ -65,7 +67,7 @@ and open the template in the editor.
                         accountNumber = data.accountNumber;
                         email = data.email;
                         initBalance = data.balance;
-                        $('#accountBalance').html(initBalance);
+                        $('#accountBalance').html("$" + Number(initBalance).toFixed(2));
                 },
                 error: function () {
                     alert('Error');
@@ -80,14 +82,20 @@ and open the template in the editor.
                         return;
                     }
                     amount = amount * -1;
+                }else{
+                    if(!isValidDeposit(amount)){
+                        $('#error').html("Invalid deposit");
+                        return;
+                    }
                 }
+                
                 let balance = initBalance + amount;
-                console.log("initBalance: " + initBalance + " amount: " + amount + " balance: " + balance)
-                var data = JSON.stringify({
+                let data = JSON.stringify({
                     accountNumber: accountNumber,
                     email: email,
                     balance: balance
                 });
+                
                 $.ajax({
                     url: 'api/dashboard',
                     type: 'put',
@@ -101,7 +109,7 @@ and open the template in the editor.
                             deleteAccount();
                         }
                         initBalance = parseFloat(resp);
-                        $('#accountBalance').html(resp);
+                        $('#accountBalance').html("$" + Number(initBalance).toFixed(2));
                     },
                     error: function (resp) {
                         $('#error').html(resp.responseText);
@@ -124,8 +132,6 @@ and open the template in the editor.
             }
             
             $('#logoutLink').click(function () {
-                var pathname = window.location.pathname;
-                var app = pathname.split('/')[1];
                 $.ajax({
                     url: 'api/logout',
                     type: 'get',
@@ -145,8 +151,18 @@ and open the template in the editor.
                     return false;
                 }
 
-                var withdrawalFloat = parseFloat(withdrawal);
-                return (20 <= withdrawalFloat && withdrawalFloat <= 500) && (withdrawalFloat % 20 === 0);
+                let withdrawalFloat = parseFloat(withdrawal);
+                return (20 <= withdrawalFloat && withdrawalFloat <= 500) && (withdrawalFloat % 20 === 0) && (initBalance - withdrawalFloat >= 0);
+            }
+            
+            function isValidDeposit(deposit) {
+
+                if (!(/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(deposit))) {
+                    return false;
+                }
+
+                let depositFloat = parseFloat(deposit);
+                return (5 <= depositFloat && depositFloat <= 10000) && (depositFloat % 1 === 0);
             }
             
         </script>

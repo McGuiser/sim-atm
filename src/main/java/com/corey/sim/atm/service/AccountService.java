@@ -14,10 +14,6 @@ public class AccountService {
     @PersistenceContext
     private EntityManager em;
 
-    public Account selectById(Long id) {
-        return em.find(Account.class, id);
-    }
-
     public Account selectByAccountNumber(String accountNumber) {
         TypedQuery<Account> q = em.createNamedQuery("Account.selectByAccountNumber", Account.class);
         q.setParameter("accountNumber", accountNumber);
