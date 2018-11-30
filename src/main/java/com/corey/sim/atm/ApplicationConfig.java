@@ -19,8 +19,9 @@ public class ApplicationConfig extends Application {
      * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.corey.sim.atm.ws.DashboardWS.class);
         resources.add(com.corey.sim.atm.ws.LoginWS.class);
+        resources.add(com.corey.sim.atm.ws.LogoutWS.class);
         resources.add(com.corey.sim.atm.ws.RegistrationWS.class);
-        resources.add(edu.tarleton.purplepay.ws.vendor.DashboardWS.class);
     }
 }

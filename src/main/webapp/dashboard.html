@@ -21,13 +21,13 @@ and open the template in the editor.
                 
                 <a class="active" href="deposit">Deposit</a>
                 <a href="withdrawal">Withdrawal</a>
-                
+                <a id="logoutLink" href="logout">Logout</a>
             </div>
             <div id="amount" class="form">
             
                 <label for="inAmount">Amount: </label>
                 <input id="inAmount" type=text>
-                <span id="regError" class="error"></span>
+                <span id="error" class="error"></span>
                 <button id="confirmButton">Confirm</button>
 
             </div>
@@ -75,6 +75,10 @@ and open the template in the editor.
             $('#confirmButton').click(function () {
                 let amount = parseFloat($('#inAmount').val());
                 if(transactionType === 'withdrawal'){
+                    if(!isValidWithdrawal(amount)){
+                        $('#error').html("Invalid withdrawal");
+                        return;
+                    }
                     amount = amount * -1;
                 }
                 let balance = initBalance + amount;
@@ -86,12 +90,16 @@ and open the template in the editor.
                 });
                 $.ajax({
                     url: 'api/dashboard',
-                    type: 'post',
+                    type: 'put',
                     contentType: 'application/json',
                     data: data,
                     dataType: 'text',
                     success: function (resp) {
-                        console.log(resp);
+                        $('#inAmount').val('');
+                        $('#error').html('');
+                        if(resp < 20){
+                            deleteAccount();
+                        }
                         initBalance = parseFloat(resp);
                         $('#accountBalance').html(resp);
                     },
@@ -100,6 +108,46 @@ and open the template in the editor.
                     }
                 });
             });
+            
+            function deleteAccount(){
+                $.ajax({
+                    url: 'api/dashboard',
+                    type: 'delete',
+                    dataType: 'text',
+                    success: function () {
+                        window.location.replace("/sim-atm/");
+                    },
+                    error: function () {
+                        alert('Error');
+                    }
+                });
+            }
+            
+            $('#logoutLink').click(function () {
+                var pathname = window.location.pathname;
+                var app = pathname.split('/')[1];
+                $.ajax({
+                    url: 'api/logout',
+                    type: 'get',
+                    dataType: 'text',
+                    success: function () {
+                        window.location.replace("/sim-atm/");
+                    },
+                    error: function () {
+                        alert('Error');
+                    }
+                });
+            });
+            
+            function isValidWithdrawal(withdrawal) {
+
+                if (!(/^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(withdrawal))) {
+                    return false;
+                }
+
+                var withdrawalFloat = parseFloat(withdrawal);
+                return (20 <= withdrawalFloat && withdrawalFloat <= 500) && (withdrawalFloat % 20 === 0);
+            }
             
         </script>
     </body>

@@ -15,12 +15,12 @@
                 <a href="registration">Register</a>
                 
             </div>
-            <div id="amount" class="form invisible">
+            <div id="registration" class="form invisible">
             
                 <label for="regEmail">Email</label>
                 <input id="regEmail" type="text">
                 <label for="initDeposit">Initial Deposit</label>
-                <input id="depositAmount" type=text>
+                <input id="initDeposit" type=text>
                 <label for="regPIN">4-Digit PIN</label>
                 <input id="regPIN" type="password">
                 <label for="regPINAgain">4-Digit PIN again</label>
@@ -76,7 +76,7 @@
                     contentType: 'application/json',
                     data: data,
                     success: function () {
-                            window.location.replace("dashboard.html");
+                        window.location.replace("dashboard.html");
                     },
                     error: function () {
                         $('#loginError').html('Invalid account # or pin');
