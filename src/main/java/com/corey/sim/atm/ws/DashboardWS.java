@@ -68,9 +68,22 @@ public class DashboardWS {
             }
             
             float amount = dashDTO.getBalance();
-            account.setBalance(amount);
+            float minNew = account.getBalance() - 500;
+            float maxNew = account.getBalance() + 10000;
             
-            accountService.merge(account);
+            if(amount < account.getBalance()){
+                if(!((minNew <= amount) && ((account.getBalance() - amount) % 20 == 0))){
+                    return Response.status(Status.BAD_REQUEST).entity("Invalid withdrawal").build();
+                }
+            }else{
+                if(!(amount <= maxNew)){
+                    return Response.status(Status.BAD_REQUEST).entity("Invalid deposit").build();
+                }
+            }
+            
+                account.setBalance(amount);
+                accountService.merge(account);
+            
             dashDTO = new DashboardDTO(account);
             
             return Response.ok(dashDTO.getBalance()).build();

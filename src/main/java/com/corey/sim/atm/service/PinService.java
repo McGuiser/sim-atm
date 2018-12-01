@@ -28,10 +28,8 @@ public class PinService {
     }
 
     public void verifyPin(String encrypted, String plain) throws ServiceException {
-        System.out.println("In verify PIN");
         String pin = encryptPin(plain);
         if (!encrypted.equals(pin)) {
-            System.out.println("Invalid pin");
             throw new ServiceException("invalid pin");
         }
     }
