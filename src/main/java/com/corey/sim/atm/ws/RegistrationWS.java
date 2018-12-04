@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response.Status;
 public class RegistrationWS {
 
     private static final Logger logger = Logger.getAnonymousLogger();
+    
     @EJB
     private AccountService accountService;
     

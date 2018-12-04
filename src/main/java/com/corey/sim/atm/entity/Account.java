@@ -1,7 +1,6 @@
 package com.corey.sim.atm.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +20,6 @@ public class Account implements Serializable {
     public static final int EMAIL_MAX_LENGTH = 60;
     public static final int PIN_LENGTH = 4;
     public static final int MIN_INIT_DEPOSIT = 20;
-    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,12 +58,10 @@ public class Account implements Serializable {
     }
 
     public Float getBalance() {
-        System.out.println("Hello from account");
         return balance;
     }
 
     public void setBalance(Float balance) {
-        System.out.println("Hello from account");
         this.balance = balance;
     }
 

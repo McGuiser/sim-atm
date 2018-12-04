@@ -4,29 +4,45 @@
 
 body {
     font-family: Helvetica, Arial, sans-serif;
+    background-image: linear-gradient(to bottom, #EBEBEB, #EBEBEB 60%, white 40%, white);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
 }
 
 
 
 .header {
     color: #2C7BC0;
-    background-color: white;
     padding: 20px;
     text-align: justify;
     font-size: 35px;
 }
 
 .wrapper{
-    width: 400px;
+    width: 100%;
+}
+
+.inner{
+    background-color: white;
+    display: table;
+    margin: 100px auto;
+    width: 500px;
+    height: 639px;
+    filter: drop-shadow(-12px 12px 10px #606060);
 }
 
 .account-menu {
-    list-style-type: none;
-    margin-left: 40px;
-    margin-top: 30px;
+    display: table;
+    margin: 40px auto;
     padding: 0;
     width: 400px;
     height: 50px;
+    text-align: center;
 }
 
 .account-menu a {
@@ -47,6 +63,16 @@ body {
     color: white;
 }
 
+#amount{
+    display: table;
+    margin: 20px auto;
+}
+
+#amountForm{
+    display: table;
+    margin: 30px auto;
+}
+
 .error {
     color: red;
     padding: 5px 5px;
@@ -54,15 +80,11 @@ body {
     display: inline-block;
 }
 
-.small {
-    width: 300px;
-    margin-left: 40px;
-}
-
 .form {
     width: 300px;
     height: 300px;
-    margin-left: 40px;
+    display: table;
+    margin: 20px auto;
 }
 
 .invisible {
@@ -101,4 +123,12 @@ button {
 
 button:hover {
     background-color: #2C7BC0;
+}
+
+table.fixed { 
+    table-layout:fixed; 
+}
+
+table.fixed td { 
+    overflow: hidden; 
 }

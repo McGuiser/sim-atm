@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 public class LogoutWS {
 
     private static final Logger logger = Logger.getAnonymousLogger();
+    
     @Context
     private HttpServletRequest request;
 

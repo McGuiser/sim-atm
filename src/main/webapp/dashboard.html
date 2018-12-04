@@ -12,44 +12,52 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <h1 class="header">Sim ATM</h1>
         
         <div class="wrapper">
-            <div class="account-menu">
-                
-                <a class="active" href="deposit">Deposit</a>
-                <a href="withdrawal">Withdrawal</a>
-                <a href="history">History</a>
-                <a id="logoutLink" href="logout">Logout</a>
-                
-            </div>
-            <div id="amount" class="form">
-                
-                <div id="accountBalance" style="font-size: 30px;"></div><br>
-                
-                <div id="amountForm" class="invisible">
-                    <label for="inAmount">Amount: </label>
-                    <input id="inAmount" type=text>
-
-                    <span id="error" class="error"></span>
-                    <button id="confirmButton">Confirm</button>  
+            <div class="inner">
+                <div class="account-menu" style="font-size: 20px">
+                    Welcome back to Sim ATM.
                 </div>
-                
-                <div id="transactionHistory" class="invisible" style="height: 400px; width: 400px; overflow-y:auto">
-                    <table id="history-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>ID</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tdata">
-                            <!-- Populated using AJAX -->
-                        </tbody>
+                <div class="account-menu">
 
-                    </table>
+                    <a class="active" href="deposit">Deposit</a>
+                    <a href="withdrawal">Withdrawal</a>
+                    <a href="history">History</a>
+                    <a id="logoutLink" href="logout">Logout</a>
+
+                </div>
+                <div style="display: table; margin: 10px auto;">
+                <div style="font-size: 20px; margin-right:10px;">Balance:</div> 
+                <div id="accountBalance" style="font-size: 40px; margin-top: 10px;"></div>
+                </div>
+                <div id="amount" class="form">
+                     
+
+                    <div id="amountForm" class="invisible">
+                        <label for="inAmount">Amount: </label>
+                        <input id="inAmount" type=text>
+
+                        <span id="error" class="error"></span>
+                        <button id="confirmButton">Confirm</button>  
+                    </div>
+
+                    <div id="transactionHistory" class="invisible" style="height: 280px; width: 400px; overflow-y:auto">
+                        <table id="history-table-head" class="fixed">
+                            <col width="100px" />
+                            <col width="100px" />
+                            <col width="100px" />
+                            <col width="100px" />
+                            <tr>
+                                <td>Date</td>
+                                <td>Type</td>
+                                <td>Amount</td>
+                                <td>ID</td>
+                            </tr>
+                        </table>
+                        <table id="tdata" class="fixed">
+                            <!-- Populated using AJAX -->
+                        </table>
+                    </div>
                 </div>
 
             </div>
@@ -76,17 +84,13 @@ and open the template in the editor.
                     }
                 });
                 let link = $(ev.target);
-                console.log(link);
                 link.addClass('active');
                 transactionType = link.attr('href');
-                console.log(transactionType);
                 if(transactionType === 'history'){
-                    console.log("is history");
                     $('#transactionHistory').show();
                     $('#amountForm').hide();
                 }
                 else{
-                    console.log("not history");
                     $('#transactionHistory').hide();
                     $('#amountForm').show();
                 }
@@ -115,10 +119,12 @@ and open the template in the editor.
                     dataType: 'json',
                     success: function (data) {
                         $('#tdata').empty();
+                        $('#tdata').append('<col width="100px" /><col width="100px" />\n\
+                                            <col width="100px" /><col width="100px" />');
                         $.each(data.reverse(), function (i, transactions) {
                             var tdata = '<tr><td>' + transactions.transactionDate + '</td><td>'
                                     + transactions.transactionType + '</td><td>'
-                                    + transactions.amount + '</td><td>'
+                                    + "$" + Number(transactions.amount).toFixed(2) + '</td><td>'
                                     + transactions.id + '</td></tr>';
                             $('#tdata').append(tdata);
                         });

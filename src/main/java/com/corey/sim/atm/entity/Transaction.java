@@ -1,7 +1,6 @@
 package com.corey.sim.atm.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -16,9 +15,6 @@ import javax.persistence.TemporalType;
 @Table(name = "TRANSACTIONS")
 @NamedQuery(name = "Transaction.selectByAccountNumber", query = "select t from Transaction t where t.accountNumber = :accountNumber")
 public class Transaction implements Serializable {
-
-    public static final int ID_LENGTH = 10;
-    private static final long serialVersionUID = 1L;
     
     @Id
     private String id;

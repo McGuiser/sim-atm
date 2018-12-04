@@ -1,15 +1,9 @@
 package com.corey.sim.atm.ws;
 
-import com.corey.sim.atm.entity.Transaction;
 import com.corey.sim.atm.service.AuthService;
 import com.corey.sim.atm.entity.Account;
 import com.corey.sim.atm.dto.DashboardDTO;
-import com.corey.sim.atm.dto.TransactionDTO;
 import com.corey.sim.atm.service.AccountService;
-import com.corey.sim.atm.service.TransactionService;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -18,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -39,9 +31,6 @@ public class DashboardWS {
     
     @EJB
     private AccountService accountService;
-    
-    @EJB
-    private TransactionService transactionService;
 
     @GET
     @Consumes("application/json")

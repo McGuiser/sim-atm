@@ -6,38 +6,41 @@
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <h1 class="header">Sim ATM</h1>
-        
         <div class="wrapper">
-            <div class="account-menu">
+            <div class="inner">
+                <div class="account-menu" style="font-size: 20px">
+                    Welcome to Sim ATM.
+                </div>
+                <div class="account-menu">
                 
                 <a class="active" href="login">Sign In</a>
                 <a href="registration">Register</a>
                 
-            </div>
-            <div id="registration" class="form invisible">
-            
-                <label for="regEmail">Email</label>
-                <input id="regEmail" type="text">
-                <label for="initDeposit">Initial Deposit</label>
-                <input id="initDeposit" type=text>
-                <label for="regPIN">4-Digit PIN</label>
-                <input id="regPIN" type="password">
-                <label for="regPINAgain">4-Digit PIN again</label>
-                <input id="regPINAgain" type="password">
-                <span id="regError" class="error"></span>
-                <button id="registerButton">Register</button>
+                </div>
+                <div id="registration" class="form invisible">
 
-            </div>
-            <div id="login" class="form invisible" style="display: block;">
+                    <label for="regEmail">Email</label>
+                    <input id="regEmail" type="text">
+                    <label for="initDeposit">Initial Deposit</label>
+                    <input id="initDeposit" type=text>
+                    <label for="regPIN">4-Digit PIN</label>
+                    <input id="regPIN" type="password">
+                    <label for="regPINAgain">4-Digit PIN again</label>
+                    <input id="regPINAgain" type="password">
+                    <span id="regError" class="error"></span>
+                    <button id="registerButton">Register</button>
 
-                <label for="accountNumber">Account #</label>
-                <input id="accountNumber" type="text">
-                <label for="loginPIN">4-Digit PIN</label>
-                <input id="loginPIN" type="password">
-                <span id="loginError" class="error"></span>
-                <button id="loginButton">Sign In</button>
-            
+                </div>
+                <div id="login" class="form invisible" style="display: block;">
+
+                    <label for="accountNumber">Account #</label>
+                    <input id="accountNumber" type="text">
+                    <label for="loginPIN">4-Digit PIN</label>
+                    <input id="loginPIN" type="password">
+                    <span id="loginError" class="error"></span>
+                    <button id="loginButton">Sign In</button>
+
+                </div>
             </div>
         </div>
         
@@ -64,7 +67,6 @@
             $('#loginButton').on('click', function () {
                 var accountNumber = $('#accountNumber').val().trim();
                 var pin = $('#loginPIN').val().trim();
-                console.log(accountNumber + " " + pin)
                 var data = JSON.stringify({
                     accountNumber: accountNumber,
                     pin: pin
@@ -121,7 +123,6 @@
                         alert('Registration successful. Your account number is: ' + resp);
                     },
                     error: function (resp) {
-                        console.log(deposit);
                         $('#regError').html(resp.responseText);
                     }
                 });

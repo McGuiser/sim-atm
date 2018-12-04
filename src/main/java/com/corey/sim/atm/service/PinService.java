@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class PinService {
 
-    // TODO: encryption
     public String encryptPin(String passwd) throws ServiceException {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
