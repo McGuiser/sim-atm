@@ -19,6 +19,7 @@ and open the template in the editor.
                 
                 <a class="active" href="deposit">Deposit</a>
                 <a href="withdrawal">Withdrawal</a>
+                <a href="history">History</a>
                 <a id="logoutLink" href="logout">Logout</a>
                 
             </div>
@@ -26,11 +27,30 @@ and open the template in the editor.
                 
                 <div id="accountBalance" style="font-size: 30px;"></div><br>
                 
-                <label for="inAmount">Amount: </label>
-                <input id="inAmount" type=text>
+                <div id="amountForm" class="invisible">
+                    <label for="inAmount">Amount: </label>
+                    <input id="inAmount" type=text>
+
+                    <span id="error" class="error"></span>
+                    <button id="confirmButton">Confirm</button>  
+                </div>
                 
-                <span id="error" class="error"></span>
-                <button id="confirmButton">Confirm</button>
+                <div id="transactionHistory" class="invisible" style="height: 400px; width: 400px; overflow-y:auto">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>ID</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tdata">
+                            <!-- Populated using AJAX -->
+                        </tbody>
+
+                    </table>
+                </div>
 
             </div>
         </div>
@@ -40,10 +60,12 @@ and open the template in the editor.
         <script>
             "use strict";
             
-            let transactionType;
+            let transactionType = "deposit";
             let accountNumber;
             let email;
             let initBalance;
+            
+            getTransactions();
             
             $('.account-menu a').click(function (ev) {
                 $('.account-menu a').each(function (i, elem) {
@@ -54,8 +76,20 @@ and open the template in the editor.
                     }
                 });
                 let link = $(ev.target);
+                console.log(link);
                 link.addClass('active');
                 transactionType = link.attr('href');
+                console.log(transactionType);
+                if(transactionType === 'history'){
+                    console.log("is history");
+                    $('#transactionHistory').show();
+                    $('#amountForm').hide();
+                }
+                else{
+                    console.log("not history");
+                    $('#transactionHistory').hide();
+                    $('#amountForm').show();
+                }
                 return false;
             });
             
@@ -67,12 +101,33 @@ and open the template in the editor.
                         accountNumber = data.accountNumber;
                         email = data.email;
                         initBalance = data.balance;
+                        $('#amountForm').show();
                         $('#accountBalance').html("$" + Number(initBalance).toFixed(2));
                 },
                 error: function () {
                     alert('Error');
                 }
             });
+            function getTransactions(){
+                $.ajax({
+                    url: 'api/transaction',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#tdata').empty();
+                        $.each(data.reverse(), function (i, transactions) {
+                            var tdata = '<tr><td>' + transactions.transactionDate + '</td><td>'
+                                    + transactions.transactionType + '</td><td>'
+                                    + transactions.amount + '</td><td>'
+                                    + transactions.id + '</td></tr>';
+                            $('#tdata').append(tdata);
+                        });
+                    },
+                    error: function () {
+                        alert('Error');
+                    }
+                });
+            }
                 
             $('#confirmButton').click(function () {
                 let amount = parseFloat($('#inAmount').val());
@@ -81,24 +136,22 @@ and open the template in the editor.
                         $('#error').html("Invalid withdrawal");
                         return;
                     }
-                    amount = amount * -1;
                 }else{
                     if(!isValidDeposit(amount)){
                         $('#error').html("Invalid deposit");
                         return;
                     }
                 }
-                
-                let balance = initBalance + amount;
                 let data = JSON.stringify({
+                    
                     accountNumber: accountNumber,
-                    email: email,
-                    balance: balance
+                    transactionType: transactionType,
+                    amount: amount
                 });
                 
                 $.ajax({
-                    url: 'api/dashboard',
-                    type: 'put',
+                    url: 'api/transaction',
+                    type: 'post',
                     contentType: 'application/json',
                     data: data,
                     dataType: 'text',
@@ -110,6 +163,7 @@ and open the template in the editor.
                         }
                         initBalance = parseFloat(resp);
                         $('#accountBalance').html("$" + Number(initBalance).toFixed(2));
+                        getTransactions();
                     },
                     error: function (resp) {
                         $('#error').html(resp.responseText);
@@ -118,12 +172,14 @@ and open the template in the editor.
             });
             
             function deleteAccount(){
+                var pathname = window.location.pathname;
+                var app = pathname.split('/')[1];
                 $.ajax({
                     url: 'api/dashboard',
                     type: 'delete',
                     dataType: 'text',
                     success: function () {
-                        window.location.replace("/sim-atm/");
+                        window.location.replace('/' + app);
                     },
                     error: function () {
                         alert('Error');
@@ -132,12 +188,14 @@ and open the template in the editor.
             }
             
             $('#logoutLink').click(function () {
+                var pathname = window.location.pathname;
+                var app = pathname.split('/')[1];
                 $.ajax({
                     url: 'api/logout',
                     type: 'get',
                     dataType: 'text',
                     success: function () {
-                        window.location.replace("/sim-atm/");
+                        window.location.replace('/' + app);
                     },
                     error: function () {
                         alert('Error');

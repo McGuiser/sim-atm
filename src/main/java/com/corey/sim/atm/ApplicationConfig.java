@@ -23,5 +23,6 @@ public class ApplicationConfig extends Application {
         resources.add(com.corey.sim.atm.ws.LoginWS.class);
         resources.add(com.corey.sim.atm.ws.LogoutWS.class);
         resources.add(com.corey.sim.atm.ws.RegistrationWS.class);
+        resources.add(com.corey.sim.atm.ws.TransactionWS.class);
     }
 }

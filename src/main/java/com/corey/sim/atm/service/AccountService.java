@@ -1,7 +1,7 @@
 package com.corey.sim.atm.service;
 
-import com.corey.sim.atm.datastore.Account;
-import com.corey.sim.atm.datastore.AuthGroup;
+import com.corey.sim.atm.entity.Account;
+import com.corey.sim.atm.entity.AuthGroup;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

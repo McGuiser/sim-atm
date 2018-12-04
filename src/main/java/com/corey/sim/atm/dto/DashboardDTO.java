@@ -1,6 +1,6 @@
 package com.corey.sim.atm.dto;
 
-import com.corey.sim.atm.datastore.Account;
+import com.corey.sim.atm.entity.Account;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement

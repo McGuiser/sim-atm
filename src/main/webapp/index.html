@@ -97,6 +97,10 @@
                     $('#regError').html('PINs do not match');
                     return;
                 }
+                if (pin.length !== 4) {
+                    $('#regError').html('PIN is not 4 characters');
+                    return;
+                }
                 var data = JSON.stringify({
                     email: email,
                     balance: deposit,

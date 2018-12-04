@@ -1,9 +1,15 @@
 package com.corey.sim.atm.ws;
 
+import com.corey.sim.atm.entity.Transaction;
 import com.corey.sim.atm.service.AuthService;
-import com.corey.sim.atm.datastore.Account;
+import com.corey.sim.atm.entity.Account;
 import com.corey.sim.atm.dto.DashboardDTO;
+import com.corey.sim.atm.dto.TransactionDTO;
 import com.corey.sim.atm.service.AccountService;
+import com.corey.sim.atm.service.TransactionService;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -12,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -32,6 +39,9 @@ public class DashboardWS {
     
     @EJB
     private AccountService accountService;
+    
+    @EJB
+    private TransactionService transactionService;
 
     @GET
     @Consumes("application/json")
@@ -49,44 +59,6 @@ public class DashboardWS {
             DashboardDTO dashDTO = new DashboardDTO(account);
             
             return Response.ok(dashDTO).build();
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "WS failed", e);
-            return Response.serverError().build();
-        }
-    }
-    
-    @PUT
-    @Consumes("application/json")
-    @Produces("text/plain")
-    public Response update(DashboardDTO dashDTO) {
-        try {
-            String accountNumber = authService.getAccountNumber();
-            Account account = accountService.selectByAccountNumber(accountNumber);
-            
-            if (account == null) {
-                return Response.status(Status.UNAUTHORIZED).build();
-            }
-            
-            float amount = dashDTO.getBalance();
-            float minNew = account.getBalance() - 500;
-            float maxNew = account.getBalance() + 10000;
-            
-            if(amount < account.getBalance()){
-                if(!((minNew <= amount) && ((account.getBalance() - amount) % 20 == 0))){
-                    return Response.status(Status.BAD_REQUEST).entity("Invalid withdrawal").build();
-                }
-            }else{
-                if(!(amount <= maxNew)){
-                    return Response.status(Status.BAD_REQUEST).entity("Invalid deposit").build();
-                }
-            }
-            
-                account.setBalance(amount);
-                accountService.merge(account);
-            
-            dashDTO = new DashboardDTO(account);
-            
-            return Response.ok(dashDTO.getBalance()).build();
         } catch (Exception e) {
             logger.log(Level.WARNING, "WS failed", e);
             return Response.serverError().build();

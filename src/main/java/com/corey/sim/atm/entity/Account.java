@@ -1,4 +1,4 @@
-package com.corey.sim.atm.datastore;
+package com.corey.sim.atm.entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
